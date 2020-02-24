@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using ServicoRef1;
 
 namespace Pitstop.TimeService
 {
@@ -14,6 +15,8 @@ namespace Pitstop.TimeService
     {
         public static async Task Main(string[] args)
         {
+          Task< AddResponse> resp= testSoap();
+
             var host = CreateHostBuilder(args).Build();
             await host.RunAsync();
         }
@@ -54,6 +57,15 @@ namespace Pitstop.TimeService
                 .UseConsoleLifetime();
 
             return hostBuilder;
-        }        
+        }
+
+        public static Task<AddResponse> testSoap()
+        {
+            CalculatorSoapClient cli = new CalculatorSoapClient(CalculatorSoapClient.EndpointConfiguration.CalculatorSoap);
+            AddRequest ad = new AddRequest { intA = 1, intB = 7 };
+            var soma = cli.AddAsync(ad);
+            return soma;
+
+        }
     }
 }
